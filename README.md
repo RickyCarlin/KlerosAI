@@ -1,12 +1,12 @@
 <h1 align="center">KLEROS AI AGENT</h1>
 
 <p align="center">
-    An AI Agent for Analyzing Centeralized and Decenteralized Cryptocurrency Exchanges build with Python and OpenAI.
+    An AI Agent for Analyzing Centralized and Decentralized Cryptocurrency Exchanges built with Python and OpenAI.
 </p>
 
 <p align="center">
     <a href='#overview'><strong>Overview</strong></a> ·
-    <a href='#directory-structure'><strong>Directory Structure</strong></a> .
+    <a href='#directory-structure'><strong>Directory Structure</strong></a> ·
     <a href='#features'><strong>Features</strong></a> ·
     <a href='#exchange-support'><strong>Exchange Support</strong></a> ·
     <a href='#accessing-the-agent'><strong>Accessing the Agent</strong></a> ·
@@ -25,62 +25,79 @@ The Kleros AI Agent is a powerful tool designed to analyze both centralized and 
 Below is the folder structure in a tree format to illustrate the project organization:
 
 ```
+KLEROSAI/
+|- app_data/
+|- rulebooks/
 |- src/
+|  |- data/
+|  |  |- Exchanges.py
+|  |- logic/
+|  |  |- ArbiSense.py
+|  |  |- NewScout.py
+|  |- models/
+|  |  |- PriceDataModel.py
 |  |- services/
+|  |  |- AppDataService.py
 |  |  |- BinanceIntegrationService.py
 |  |  |- ByBitIntegrationService.py
+|  |  |- ChatGPTConnectionService.py
 |  |  |- KrakenIntegrationService.py
 |  |  |- KuCoinIntegrationService.py
 |  |  |- OKXIntegrationService.py
 |  |  |- TelegramConnectionService.py
 |  |  |- TelethonService.py
-|  |  |- AppDataService.py
-|  |- logic/
-|  |  |- NewScout.py
-|  |  |- ArbiSense.py
-|  |- models/
-|  |  |- PriceDataModel.py
 |  |- utils/
-|     |- logger.py
 |     |- fileutils.py
-|- rulebooks/
-|  |- [JSON files for exchange symbol rules]
-|- main.py
+|     |- logger.py
+|     |- paths.py
+|- KLEROSAI.py
 |- README.md
+|- requirements.txt
 ```
 
-### `src`
+### src
 The main source directory containing the core services, models, and utility functions.
 
-- **`services/`**: Contains integration services for different exchanges and communication tools.
+- **data/**: Contains modules related to exchange-related data.
+  - `Exchanges.py`: Manages information about supported exchanges.
+
+- **services/**: Contains integration services for different exchanges and communication tools.
+  - `AppDataService.py`: Manages file paths, API key storage, and subscription-related files.
   - `BinanceIntegrationService.py`: Handles API interactions with Binance to fetch symbol data and price changes.
   - `ByBitIntegrationService.py`: Fetches trading data from ByBit’s API.
+  - `ChatGPTConnectionService.py`: Connects to OpenAI’s API for generating summaries and automated responses.
   - `KrakenIntegrationService.py`: Retrieves asset pairs and ticker data from Kraken.
   - `KuCoinIntegrationService.py`: Interfaces with KuCoin’s market data API.
   - `OKXIntegrationService.py`: Handles OKX’s market data retrieval.
   - `TelegramConnectionService.py`: Manages connections to the Telegram Bot API and sends notifications.
   - `TelethonService.py`: Utilizes Telethon to connect to Telegram channels for scraping crypto news.
-  - `AppDataService.py`: Manages file paths, API key storage, and subscription-related files.
 
-- **`logic/`**: Contains the core logic for orchestrating services.
+- **logic/**: Contains the core logic for orchestrating services.
   - `NewScout.py`: A service that listens for crypto-related news updates from specified Telegram channels.
   - `ArbiSense.py`: Detects arbitrage opportunities by comparing price data across different exchanges.
 
-- **`models/`**: Houses data models used in the project.
+- **models/**: Houses data models used in the project.
   - `PriceDataModel.py`: Represents the structure of price data, including attributes for symbol, price, exchange, and volume.
 
-- **`utils/`**: Provides utility classes.
+- **utils/**: Provides utility classes and helper functions.
   - `logger.py`: Implements a singleton logger for consistent logging across services.
   - `fileutils.py`: Contains helper functions for file operations.
+  - `paths.py`: Centralizes file and directory path references.
 
-### `rulebooks/`
+### app_data/
+Contains application-specific data such as API key files and cached data.
+
+### rulebooks/
 A folder where JSON files containing exchange-specific symbol rules and settings are stored.
 
-### `main.py`
-The entry point of the application that initializes and starts services like `ArbiSense` and `NewScout`. This file sets up the Flask server for real-time streaming of arbitrage data and handles user interactions via the Telegram Bot.
+### KLEROSAI.py
+The main entry point of the application that initializes and starts services like ArbiSense and NewScout.
 
-### `README.md`
+### README.md
 The primary documentation file that provides a summary of the project, including features, supported exchanges, and how users can access the AI Agent.
+
+### requirements.txt
+Lists all the dependencies required to run the project.
 
 ---
 
@@ -106,7 +123,7 @@ A feature that tracks crypto news from Telegram channels to detect major announc
 
 **Highlights:**
 - Subscribes to predefined Telegram channels.
-- Uses `TelethonService` to receive and parse messages containing relevant keywords.
+- Uses TelethonService to receive and parse messages containing relevant keywords.
 
 NewsPulse is responsible for monitoring key channels for updates that might influence the crypto market.
 
@@ -145,7 +162,6 @@ Each integration service (Binance, ByBit, Kraken, KuCoin, OKX) implements the fo
 - `get_usdt_pairs_dictionary()`: Retrieves the USDT trading pairs and their respective prices.
 
 **Example:**
-`ByBitIntegrationService.py`
 ```python
 self.price_retrieval_thread = threading.Thread(target=self._price_data_retrieval)
 self.price_retrieval_thread_running = True
@@ -160,23 +176,23 @@ self.price_retrieval_thread.start()
 - `send_message_to_all_users()`: Sends a broadcast message.
 - `start_client_with_phone_number()`: Initializes the Telethon client.
 
-### 3. **Arbitrage Detection (`ArbiSense.py`)**
+### 3. **Arbitrage Detection (ArbiSense.py)**
 - Detects price differences between exchanges.
 - Compares trading pairs and sends alerts for arbitrage opportunities.
 - Uses threading to perform parallel data analysis.
 
-### 4. **News Detection (`NewScout.py`)**
+### 4. **News Detection (NewScout.py)**
 - Monitors channels and parses messages to extract relevant trading symbols.
 - Broadcasts detected news to users via Telegram.
 
-### 5. **Web Server (`main.py`)**
+### 5. **Web Server (KLEROSAI.py)**
 - Implements a Flask-based server that streams arbitrage data to clients.
 - Uses Server-Sent Events (SSE) for real-time updates.
 
 ---
 
 ## API Configuration and Secrets
-The `AppDataService.py` ensures that API keys and Telegram Bot tokens are securely stored in JSON files within the `keys` folder. The necessary keys and tokens include:
+The `AppDataService.py` ensures that API keys and Telegram Bot tokens are securely stored in JSON files within the `app_data` folder. The necessary keys and tokens include:
 - `telegramBotToken`
 - `api_id` (for Telethon)
 - `api_hash` (for Telethon)
@@ -195,7 +211,7 @@ The `AppDataService.py` ensures that API keys and Telegram Bot tokens are secure
    ```
 3. Run the application:
    ```bash
-   python main.py
+   python KLEROSAI.py
    ```
 
 ---
@@ -226,3 +242,4 @@ The `AppDataService.py` ensures that API keys and Telegram Bot tokens are secure
 - Support advanced filtering options for news updates.
 
 ---
+
