@@ -100,3 +100,18 @@ class AppDataService:
         AppDataService.createFollowedNewsGroup1FileIfNotExists()
         return FileUtils.read_json_from_file(FOLLOWED_NEWS_GROUP_1_FILE_PATH)
     
+    @staticmethod
+    def createGPTPromptFileIfNotExists():
+        if FileUtils.path_exists(GPT_PROMPT_FILE_PATH):
+            return
+        data = {
+            "prompt": ""
+        }
+        FileUtils.write_json_to_file(GPT_PROMPT_FILE_PATH, data)
+        return
+    
+    @staticmethod
+    def getGPTPrompt():
+        AppDataService.createKeysFolderIfNotExists()
+        AppDataService.createGPTPromptFileIfNotExists()
+        return FileUtils.read_json_from_file(GPT_PROMPT_FILE_PATH)
