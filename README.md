@@ -25,28 +25,34 @@ The Kleros AI Agent is a powerful tool designed to analyze both centralized and 
 Below is the folder structure in a tree format to illustrate the project organization:
 
 ```
+KLEROSAI/
+|- app_data/
+|- rulebooks/
 |- src/
+|  |- data/
+|  |  |- Exchanges.py
+|  |- logic/
+|  |  |- ArbiSense.py
+|  |  |- NewScout.py
+|  |- models/
+|  |  |- PriceDataModel.py
 |  |- services/
+|  |  |- AppDataService.py
 |  |  |- BinanceIntegrationService.py
 |  |  |- ByBitIntegrationService.py
+|  |  |- ChatGPTConnectionService.py
 |  |  |- KrakenIntegrationService.py
 |  |  |- KuCoinIntegrationService.py
 |  |  |- OKXIntegrationService.py
 |  |  |- TelegramConnectionService.py
 |  |  |- TelethonService.py
-|  |  |- AppDataService.py
-|  |- logic/
-|  |  |- NewScout.py
-|  |  |- ArbiSense.py
-|  |- models/
-|  |  |- PriceDataModel.py
 |  |- utils/
-|     |- logger.py
 |     |- fileutils.py
-|- rulebooks/
-|  |- [JSON files for exchange symbol rules]
-|- main.py
+|     |- logger.py
+|     |- paths.py
+|- KLEROSAI.py
 |- README.md
+|- requirements.txt
 ```
 
 ### `src`
